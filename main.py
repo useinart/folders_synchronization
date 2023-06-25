@@ -47,6 +47,7 @@ if os.path.isfile('config.txt'):
         lines = f.readlines()
         folder1 = lines[0].split(':')[1].strip()
         folder2 = lines[1].split(':')[1].strip()
+        interval = int(lines[2].split(':')[1].strip())
 
 else:
     log('config file: NOT FOUND')
@@ -54,6 +55,7 @@ else:
     # register folder
     folder1 = input('put your path in the computer:')
     folder2 = input('put your second folder path:')
+    interval = input('put intereval time')
     # check if folder is exist
     if not os.path.isdir(folder1):
         log('folder: NOT FOUND')
@@ -69,6 +71,8 @@ else:
         f.write('folder:'+folder1)
         f.write('\n')
         f.write('folder2:'+folder2)
+        f.write('\n')
+        f.write('interval:'+interval)
     print('config file: CREATED')
     log('config file: CREATED')
 
@@ -81,7 +85,7 @@ while True:
         print(f'[{now}] file is up to date')
         log('file is up to date')
         # sleep for 5 minutes
-        time.sleep(300)
+        time.sleep(interval)
         continue    
 
     # check folder
@@ -123,7 +127,7 @@ while True:
                 # copy file from folder to second folder
                 updateFile += 1
                 os.remove(folder2+'/'+file)
-                os.system('copy '+folder1+'/'+file+' '+folder2)
+                os.system('cp '+folder1+'/'+file+' '+folder2)
                 log(f'{file} is updated')
         if file not in files:
             # delete file in second folder
@@ -136,11 +140,11 @@ while True:
             # copy file from folder to second folder
             updateFile += 1
             log(f'{file} is copied')
-            os.system('copy '+folder1+'/'+file+' '+folder2)
+            os.system('cp '+folder1+'/'+file+' '+folder2)
 
 
 
     now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     print(f'[{now}] sync: {countSync}; update: {updateFile}; delete: {deleteFile};')
 
-    time.sleep(100)
+    time.sleep(interval)
